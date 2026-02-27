@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace Security.Models
+namespace Security.Models;
+
+// inherit from IdentityUser to get all the built-in properties like Email, PasswordHash, etc.
+public class ApplicationUser : IdentityUser
 {
-    internal class ApplicationUser
-    {
-    }
+    //here we can add any custom properties we want for our users. For 
 }
