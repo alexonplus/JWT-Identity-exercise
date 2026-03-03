@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Security.Models
 {
-    internal class Enrollment
+    public class Enrollment
     {
     }
 }

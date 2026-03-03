@@ -23,6 +23,7 @@ public static class IdentityServiceExtensions
         // 2. Point it to our Database Context (AppDbContext) to save user data
         services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>();
+            .AddDefaultTokenProviders(); // This adds support for things like password reset tokens
 
         return services;
     }
