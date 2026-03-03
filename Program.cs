@@ -1,4 +1,6 @@
-﻿namespace Security
+﻿using Security.Data;
+namespace Security.Extensions
+
 {
     internal class Program
     {

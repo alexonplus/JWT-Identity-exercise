@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Security.Controllers
+namespace Security.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize(Roles = "Student")] // Вот этот замок! Пустит только тех, у кого в токене роль Teacher
+public class StudentController : ControllerBase
 {
-    internal class StudentController
+    [HttpGet]
+    public IActionResult GetStudentrData()
     {
+        return Ok("Student  student");
     }
 }

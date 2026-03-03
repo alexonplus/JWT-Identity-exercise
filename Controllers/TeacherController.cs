@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Security.Controllers
+namespace Security.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize(Roles = "Teacher")] //
+public class TeacherController : ControllerBase
 {
-    internal class TeacherController
+    [HttpGet]
+    public IActionResult GetTeacherData()
     {
+        return Ok("You are  a teacher.");
     }
 }
