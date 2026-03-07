@@ -1,16 +1,28 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Security.Data;
 
 namespace Security.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
- // Вот этот замок! Пустит только тех, у кого в токене роль Teacher
+[AllowAnonymous]
 public class PublicController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetTeacherData()
+    private readonly AppDbContext _context;
+    public PublicController(AppDbContext context)
     {
-        return Ok("public public");
+        _context=context;
+    }
+
+    [HttpGet("courses")]
+    public IActionResult GetPublicCourses()
+
+    {
+        var courses = _context.Courses
+        .Where(c => c.IsPublished == true)
+        .Select(c => new {c.Id,c.Title })
+        .ToList();
+        return Ok(courses);
     }
 }

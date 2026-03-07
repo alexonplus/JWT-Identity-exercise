@@ -1,16 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-namespace Security.Controllers;
+using Security.Data;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Student")] // Вот этот замок! Пустит только тех, у кого в токене роль Teacher
+[Authorize(Roles = "Student")]
 public class StudentController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetStudentrData()
+    private readonly AppDbContext _context;
+
+    //  DI
+    public StudentController(AppDbContext context)
     {
-        return Ok("Student  student");
+        _context = context;
+    }
+
+    [HttpGet]
+    public IActionResult GetMyCourses()
+    {
+        
+        var courses = _context.Courses.ToList();
+        return Ok(courses);
     }
 }

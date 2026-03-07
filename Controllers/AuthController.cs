@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
      
         if (await _roleManager.RoleExistsAsync(dto.Role))
         {
-            await _userManager.AddToRoleAsync(user, dto.Role);
+            await _userManager.AddToRoleAsync(user, "Student");
         }
 
         return Ok("User registered successfully");
