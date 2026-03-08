@@ -8,7 +8,7 @@ namespace Security.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Teacher")]
+[Authorize(AuthenticationSchemes = "Bearer", Roles = "Teacher")]
 public class TeacherController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -51,7 +51,7 @@ public class TeacherController : ControllerBase
 
         course.IsPublished = true;
 
-        // Auto-approve все Pending enrollments для этого курса
+        // Auto-approve все Pending enrollments for this course
         var pendingEnrollments = _context.Enrollments
             .Where(e => e.CourseId == courseId && e.Status == EnrollmentStatus.Pending)
             .ToList();
