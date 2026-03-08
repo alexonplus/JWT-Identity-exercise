@@ -33,13 +33,8 @@ public class AuthController : ControllerBase
         var result = await _userManager.CreateAsync(user, dto.Password);
 
         if (!result.Succeeded) return BadRequest(result.Errors);
-
-     
-        if (await _roleManager.RoleExistsAsync(dto.Role))
-        {
-            await _userManager.AddToRoleAsync(user, "Student");
-        }
-
+            
+        await _userManager.AddToRoleAsync(user,Roles.Student);
         return Ok("User registered successfully");
     }
 

@@ -5,7 +5,7 @@ using Security.Models;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = Roles.Admin)]
+[Authorize(AuthenticationSchemes = "Bearer", Roles = Roles.Admin)]
 public class AdminController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -15,7 +15,7 @@ public class AdminController : ControllerBase
         _userManager = userManager;
     }
 
-    // GET /api/admin/users — список всех пользователей с ролями
+    // GET /api/admin/users list all users with their roles
     [HttpGet("users")]
     public async Task<IActionResult> GetUsers()
     {
@@ -31,19 +31,19 @@ public class AdminController : ControllerBase
         return Ok(result);
     }
 
-    // POST /api/admin/users/{userId}/role — назначить роль пользователю
+    // POST /api/admin/users/{userId}/role  is used to assign a role to a user. The request body should contain the role to be assign
     [HttpPost("users/{userId}/role")]
     public async Task<IActionResult> SetRole(string userId, [FromBody] SetRoleDto dto)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) return NotFound("User not found");
 
-        // Проверяем что роль существует
+        // check if role is valid
         var validRoles = new[] { Roles.Admin, Roles.Teacher, Roles.Student };
         if (!validRoles.Contains(dto.Role))
             return BadRequest("Invalid role");
 
-        // Убираем старые роли и ставим новую
+        // remove old roles and install new ones
         var currentRoles = await _userManager.GetRolesAsync(user);
         await _userManager.RemoveFromRolesAsync(user, currentRoles);
         await _userManager.AddToRoleAsync(user, dto.Role);
