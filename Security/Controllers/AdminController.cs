@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Security.Models;
+using Security.Shared.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]

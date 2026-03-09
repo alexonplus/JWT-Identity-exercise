@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Security.Data;
 using Security.Models;
+using Security.Shared.DTOs;
 using System.Security.Claims;
 
 namespace Security.Controllers;
