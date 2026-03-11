@@ -1,0 +1,61 @@
+﻿@page "/login"
+@using Security.Shared.DTOs
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<div class="card p-4 mx-auto" style="max-width: 400px; margin-top: 50px;">
+    <h3 class="text-center">Sign In</h3>
+
+    <div class="mb-3">
+        <label>Email Address</label>
+        <input @bind="email" class="form-control" placeholder="example@mail.com" />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <input @bind="password" type="password" class="form-control" />
+    </div>
+
+    <button class="btn btn-success w-100" @onclick="HandleLogin">Login</button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert @alertClass mt-3">@errorMessage</div>
+    }
+</div>
+
+@code {
+    private string email = "";
+    private string password = "";
+    private string errorMessage = "";
+    private string alertClass = "alert-danger";
+
+    private async Task HandleLogin()
+    {
+        errorMessage = "Verifying credentials...";
+        alertClass = "alert-info";
+
+        // Create the object expected by your AuthController's Login method
+        var loginDto = new { Email = email, Password = password };
+
+        // Send POST request to the API login endpoint
+        var response = await Http.PostAsJsonAsync("api/auth/login", loginDto);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Read the raw JWT token from the response body
+            var token = await response.Content.ReadAsStringAsync();
+            errorMessage = "Success! Token received. Check browser console (F12).";
+            alertClass = "alert-success";
+
+            // Print the token to console for manual testing
+            Console.WriteLine($"JWT Token: {token}");
+        }
+        else
+        {
+            // Display error if credentials are wrong or server is misconfigured
+            errorMessage = "Login failed. Check your credentials or server logs.";
+            alertClass = "alert-danger";
+        }
+    }
+}
